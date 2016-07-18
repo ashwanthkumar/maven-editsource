@@ -23,6 +23,7 @@ Maven EditSource Plugin.
             </configuration>
         </execution>
     </executions>
+</plugin>
 ```
 
 ## License
