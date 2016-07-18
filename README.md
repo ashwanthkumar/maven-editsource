@@ -6,7 +6,7 @@ Maven EditSource Plugin.
 <plugin>
     <groupId>in.ashwanthkumar</groupId>
     <artifactId>maven-editsource</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <executions>
         <execution>
             <phase>generate-resources</phase>
