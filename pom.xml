@@ -4,7 +4,7 @@
 
     <groupId>in.ashwanthkumar</groupId>
     <artifactId>maven-editsource</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
     <name>maven-editsource</name>
     <description>Maven plugin to edit source/resource files with variables</description>
