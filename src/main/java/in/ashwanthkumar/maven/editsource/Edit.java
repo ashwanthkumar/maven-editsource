@@ -1,5 +1,6 @@
 package in.ashwanthkumar.maven.editsource;
 
+import in.ashwanthkumar.utils.collections.Lists;
 import in.ashwanthkumar.utils.io.IO;
 import in.ashwanthkumar.utils.template.TemplateParser;
 import org.apache.maven.plugin.AbstractMojo;
@@ -22,24 +23,31 @@ public class Edit extends AbstractMojo {
     @Parameter(required = true)
     private Map<String, Object> variables;
 
-    @Parameter
-    private List<String> sources;
+    @Parameter(property = "edit.files")
+    private List<Input> files;
 
     public void execute() throws MojoExecutionException, MojoFailureException {
-        getLog().info("Looking for files to be edited in " + sources.toString());
+        getLog().info("Looking for files to be edited in " + Lists.mkString(files));
         for (String name : variables.keySet()) {
             getLog().info("Editing " + name + " as " + variables.get(name));
         }
 
-        for (String input : sources) {
+        for (Input file : files) {
             try {
-                File inputFile = new File(input);
-                File tmpFile = new File(input + ".tmp");
+                File inputFile = new File(file.getInput());
+                File outFile = new File(file.getOutput());
+                File tmpFile;
+                if (outFile.isDirectory()) {
+                    outFile.mkdirs();
+                    tmpFile = new File(outFile, inputFile.getName() + ".tmp");
+                } else {
+                    outFile.getParentFile().mkdirs();
+                    tmpFile = new File(outFile.getParent(), outFile.getName() + ".tmp");
+                }
+
                 listFilesAndRender(inputFile, tmpFile);
-                getLog().info("Deleting the file " + inputFile.getAbsolutePath());
-                inputFile.delete();
-                getLog().info("Copying the file " + tmpFile.getAbsolutePath() + " to " + inputFile.getAbsolutePath());
-                FileUtils.copyFile(tmpFile, inputFile);
+                getLog().info("Copying the file " + tmpFile.getAbsolutePath() + " to " + outFile.getAbsolutePath());
+                FileUtils.copyFile(tmpFile, outFile);
                 getLog().info("Deleting the file " + tmpFile.getAbsolutePath());
                 tmpFile.delete();
             } catch (IOException e) {
