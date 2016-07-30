@@ -6,7 +6,7 @@ Maven EditSource Plugin.
 <plugin>
     <groupId>in.ashwanthkumar</groupId>
     <artifactId>maven-editsource</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <executions>
         <execution>
             <phase>generate-resources</phase>
@@ -17,9 +17,12 @@ Maven EditSource Plugin.
                 <variables>
                     <version>${project.version}</version>
                 </variables>
-                <sources>
-                    <source>${project.basedir}/src/main/resources/plugin.xml</source>
-                </sources>
+                <files>
+                    <file>
+                        <input>${project.basedir}/src/main/resources/plugin.xml</input>
+                        <output>${project.build.outputDirectory}/plugin.xml</output>
+                    </file>
+                </files>
             </configuration>
         </execution>
     </executions>
